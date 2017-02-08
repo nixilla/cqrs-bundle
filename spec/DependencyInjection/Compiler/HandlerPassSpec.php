@@ -29,6 +29,8 @@ class HandlerPassSpec extends ObjectBehavior
 
         $builder->findTaggedServiceIds('cqrs.command.handler')->willReturn($services);
 
+        $definition->addMethodCall('setHandler', Argument::any())->shouldBeCalled();
+
         $this->process($builder);
     }
 }

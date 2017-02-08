@@ -6,6 +6,8 @@ use Nixilla\CqrsBundle\DependencyInjection\Compiler\ListenerPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 
 class ListenerPassSpec extends ObjectBehavior
 {
@@ -13,5 +15,22 @@ class ListenerPassSpec extends ObjectBehavior
     {
         $this->shouldHaveType(ListenerPass::class);
         $this->shouldHaveType(CompilerPassInterface::class);
+    }
+
+    function it_registers_all_services_tagged_as_listeners_to_symfony_container(ContainerBuilder $builder, Definition $definition)
+    {
+        $builder->has('cqrs.listener.list')->willReturn(false);
+        $this->process($builder);
+
+        $builder->has('cqrs.listener.list')->willReturn(true);
+        $builder->findDefinition('cqrs.listener.list')->willReturn($definition);
+
+        $services = [ 'someId' => [ ['event' => 'some.event' ]]];
+
+        $builder->findTaggedServiceIds('cqrs.event.listener')->willReturn($services);
+
+        $definition->addMethodCall('addListener', Argument::any())->shouldBeCalled();
+
+        $this->process($builder);
     }
 }
