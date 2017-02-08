@@ -7,7 +7,7 @@ php:
 
 before_script:
     - curl -s http://getcomposer.org/installer | php
-    - php composer.phar update --prefer-dist
+    - php composer.phar update --prefer-dist --ignore-platform-reqs
 
 script: bin/phpspec run -fpretty --verbose
 
