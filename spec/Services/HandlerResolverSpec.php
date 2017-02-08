@@ -24,7 +24,9 @@ class HandlerResolverSpec extends ObjectBehavior
 
     function it_can_attach_itself_to_arbitrary_events(ActionEventEmitter $dispatcher)
     {
-        $dispatcher->attachListener(Argument::any(), Argument::any())->shouldBeCalled();
+        $dispatcher
+            ->attachListener(Argument::any(), Argument::any())
+            ->shouldBeCalled();
 
         $this->attach($dispatcher)->shouldReturn(null);
     }
