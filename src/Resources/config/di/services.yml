@@ -1,10 +1,23 @@
 services:
 
-    cqrs.handler.list:
+    cqrs.handler.collection:
         class: Nixilla\CqrsBundle\Services\HandlerCollection
 
-    cqrs.listener.list:
+    cqrs.listener.collection:
         class: Nixilla\CqrsBundle\Services\ListenerCollection
 
-    cqrs.projector.list:
+    cqrs.projector.collection:
         class: Nixilla\CqrsBundle\Services\ProjectorCollection
+
+    cqrs.handler.resolver:
+        class: Nixilla\CqrsBundle\Services\HandlerResolver
+        arguments: [ "@service_container", "@serializer.name_converter.camel_case_to_snake_case" ]
+
+    cqrs.listener.resolver:
+        class: Nixilla\CqrsBundle\Services\ListenerResolver
+        arguments: [ "@cqrs.listener.collection" ]
+
+    cqrs.projector.resolver:
+        class: Nixilla\CqrsBundle\Services\ProjectorResolver
+        arguments: [ "@cqrs.projector.collection" ]
+
