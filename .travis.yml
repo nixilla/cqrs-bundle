@@ -1,0 +1,19 @@
+language: php
+
+php:
+    - 5.6
+    - 7.0
+    - 7.1
+
+before_script:
+    - curl -s http://getcomposer.org/installer | php
+    - php composer.phar update --prefer-dist
+
+script: bin/phpspec run -fpretty --verbose
+
+cache:
+    directories:
+        - $HOME/.composer/cache
+
+after_script:
+    - php bin/coveralls -v
