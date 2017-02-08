@@ -10,9 +10,9 @@ class ListenerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if( ! $container->has('cqrs.listener.list')) return;
+        if( ! $container->has('cqrs.listener.collection')) return;
 
-        $definition = $container->findDefinition('cqrs.listener.list');
+        $definition = $container->findDefinition('cqrs.listener.collection');
 
         $taggedServices = $container->findTaggedServiceIds('cqrs.event.listener');
 

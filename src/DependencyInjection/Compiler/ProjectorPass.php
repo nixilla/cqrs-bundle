@@ -10,9 +10,9 @@ class ProjectorPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if( ! $container->has('cqrs.projector.list')) return;
+        if( ! $container->has('cqrs.projector.collection')) return;
 
-        $definition = $container->findDefinition('cqrs.projector.list');
+        $definition = $container->findDefinition('cqrs.projector.collection');
 
         $taggedServices = $container->findTaggedServiceIds('cqrs.event.projector');
 

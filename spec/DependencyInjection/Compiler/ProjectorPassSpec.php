@@ -19,11 +19,11 @@ class ProjectorPassSpec extends ObjectBehavior
 
     function it_registers_all_services_tagged_as_listeners_to_symfony_container(ContainerBuilder $builder, Definition $definition)
     {
-        $builder->has('cqrs.projector.list')->willReturn(false);
+        $builder->has('cqrs.projector.collection')->willReturn(false);
         $this->process($builder);
 
-        $builder->has('cqrs.projector.list')->willReturn(true);
-        $builder->findDefinition('cqrs.projector.list')->willReturn($definition);
+        $builder->has('cqrs.projector.collection')->willReturn(true);
+        $builder->findDefinition('cqrs.projector.collection')->willReturn($definition);
 
         $services = [ 'someId' => [ ['event' => 'some.event' ]]];
 

@@ -10,9 +10,9 @@ class HandlerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if( ! $container->has('cqrs.handler.list')) return;
+        if( ! $container->has('cqrs.handler.collection')) return;
 
-        $definition = $container->findDefinition('cqrs.handler.list');
+        $definition = $container->findDefinition('cqrs.handler.collection');
 
         $taggedServices = $container->findTaggedServiceIds('cqrs.command.handler');
 

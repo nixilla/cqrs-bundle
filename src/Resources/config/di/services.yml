@@ -1,0 +1,10 @@
+services:
+
+    cqrs.handler.list:
+        class: Nixilla\CqrsBundle\Services\HandlerCollection
+
+    cqrs.listener.list:
+        class: Nixilla\CqrsBundle\Services\ListenerCollection
+
+    cqrs.projector.list:
+        class: Nixilla\CqrsBundle\Services\ProjectorCollection

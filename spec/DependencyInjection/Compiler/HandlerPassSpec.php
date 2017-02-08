@@ -19,11 +19,11 @@ class HandlerPassSpec extends ObjectBehavior
 
     function it_registers_all_services_tagged_as_handler_to_symfony_container(ContainerBuilder $builder, Definition $definition)
     {
-        $builder->has('cqrs.handler.list')->willReturn(false);
+        $builder->has('cqrs.handler.collection')->willReturn(false);
         $this->process($builder);
 
-        $builder->has('cqrs.handler.list')->willReturn(true);
-        $builder->findDefinition('cqrs.handler.list')->willReturn($definition);
+        $builder->has('cqrs.handler.collection')->willReturn(true);
+        $builder->findDefinition('cqrs.handler.collection')->willReturn($definition);
 
         $services = [ 'someId' => [ ['event' => 'some.event' ]]];
 
