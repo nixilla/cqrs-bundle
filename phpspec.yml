@@ -1,0 +1,12 @@
+suites:
+    default:
+        namespace: Nixilla\CqrsBundle
+        psr4_prefix: Nixilla\CqrsBundle
+
+extensions:
+  PhpSpecCodeCoverage\CodeCoverageExtension:
+    blacklist: [ 'spec', 'vendor' ]
+    format:
+      - clover
+    output:
+      clover: build/logs/clover.xml
