@@ -9,9 +9,9 @@ services:
     cqrs.projector.collection:
         class: Nixilla\CqrsBundle\Services\ProjectorCollection
 
-    cqrs.handler.resolver:
-        class: Nixilla\CqrsBundle\Services\HandlerResolver
-        arguments: [ "@service_container", "@serializer.name_converter.camel_case_to_snake_case" ]
+#    cqrs.handler.resolver:
+#        class: Nixilla\CqrsBundle\Services\HandlerResolver
+#        arguments: [ "@service_container", "@serializer.name_converter.camel_case_to_snake_case" ]
 
     cqrs.listener.resolver:
         class: Nixilla\CqrsBundle\Services\ListenerResolver
