@@ -17,6 +17,9 @@ class NixillaCqrsExtensionSpec extends ObjectBehavior
 
     function it_loads_local_services_into_DI(ContainerBuilder $container)
     {
-        $this->load($configs = [], $container)->shouldReturn(null);
+        $configs = [
+            [ 'event_store' => [ 'adapter' => 'some.service.id' ]]
+        ];
+        $this->load($configs, $container)->shouldReturn(null);
     }
 }

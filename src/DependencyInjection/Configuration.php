@@ -10,7 +10,18 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $treeBuilder->root('nixilla_cqrs');
+        $rootNode = $treeBuilder->root('nixilla_cqrs');
+
+        $rootNode
+            ->children()
+                ->arrayNode('event_store')
+                    ->children()
+                        ->scalarNode('adapter')->end()
+                    ->end()
+                ->end() // event_store
+            ->end()
+        ;
+
         return $treeBuilder;
     }
 }

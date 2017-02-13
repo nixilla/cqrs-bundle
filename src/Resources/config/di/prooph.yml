@@ -2,5 +2,22 @@ parameters:
 
 services:
 
+    prooph.command.bus:
+        class: Prooph\ServiceBus\CommandBus
+        calls:
+            - [ utilize, [ "@cqrs.handler.resolver" ]]
+            - [ utilize, [ "@prooph.transaction.manager" ]]
 
+    prooph.transaction.manager:
+        class: Prooph\EventStoreBusBridge\TransactionManager
+        calls:
+            - [ setUp, [ "@prooph.event.store" ]]
 
+    prooph.action.event.emitter:
+        class: Prooph\Common\Event\ProophActionEventEmitter
+
+    prooph.message.factory:
+        class: Prooph\Common\Messaging\FQCNMessageFactory
+
+    prooph.message.converter:
+        class: Prooph\Common\Messaging\NoOpMessageConverter

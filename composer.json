@@ -24,8 +24,8 @@
     "prooph/event-store-bus-bridge": "^2.0",
     "prooph/event-store-mongodb-adapter": "^2.4",
     "prooph/service-bus": "^5.2",
-    "symfony/framework-bundle": "~2.3|~3.0",
-    "symfony/serializer": "~2.3|~3.0"
+    "symfony/framework-bundle": "~2.3|~3",
+    "symfony/serializer": "~2.3|~3"
   },
   "require-dev": {
     "phpspec/phpspec": "^3",
