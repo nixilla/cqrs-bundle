@@ -21,3 +21,6 @@ services:
 
     prooph.message.converter:
         class: Prooph\Common\Messaging\NoOpMessageConverter
+
+    prooph.aggregate.translator:
+        class: Prooph\EventSourcing\EventStoreIntegration\AggregateTranslator
