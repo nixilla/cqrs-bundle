@@ -33,6 +33,12 @@ class ListenerResolver
 
     public function onRoute(ActionEvent $event)
     {
-        $event->setParam(EventBus::EVENT_PARAM_EVENT_LISTENERS, $this->collection->getListeners(get_class($event->getParam(EventBus::EVENT_PARAM_MESSAGE))));
+        $event->setParam(
+            EventBus::EVENT_PARAM_EVENT_LISTENERS,
+            array_merge(
+                $event->getParam(EventBus::EVENT_PARAM_EVENT_LISTENERS),
+                $this->collection->getListeners(get_class($event->getParam(EventBus::EVENT_PARAM_MESSAGE)))
+            )
+        );
     }
 }

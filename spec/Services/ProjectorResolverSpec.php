@@ -7,6 +7,7 @@ use Nixilla\CqrsBundle\Services\ProjectorResolver;
 use PhpSpec\ObjectBehavior;
 use Prooph\Common\Event\ActionEvent;
 use Prooph\Common\Event\ActionEventEmitter;
+use Prooph\ServiceBus\EventBus;
 use Prophecy\Argument;
 
 class ProjectorResolverSpec extends ObjectBehavior
@@ -38,15 +39,21 @@ class ProjectorResolverSpec extends ObjectBehavior
         ;
     }
 
-    function it_finds_listeners_for_given_event(ActionEvent $event)
+    function it_finds_listeners_for_given_event(ActionEvent $event, ProjectorCollection $collection)
     {
         $event
             ->setParam(Argument::any(), Argument::any())
             ->shouldBeCalled();
 
         $event
-            ->getParam(Argument::any())
-            ->shouldBeCalled();
+            ->getParam(EventBus::EVENT_PARAM_EVENT_LISTENERS)
+            ->willReturn([]);
+
+        $event
+            ->getParam(EventBus::EVENT_PARAM_MESSAGE)
+            ->willReturn(new \stdClass());
+
+        $collection->getProjectors(Argument::any())->willReturn([]);
 
         $this->onRoute($event);
     }
