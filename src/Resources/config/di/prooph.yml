@@ -8,8 +8,20 @@ services:
             - [ utilize, [ "@cqrs.handler.resolver" ]]
             - [ utilize, [ "@prooph.transaction.manager" ]]
 
+    prooph.event.bus:
+        class: Prooph\ServiceBus\EventBus
+        calls:
+            - [ utilize, [ "@cqrs.projector.resolver" ]]
+            - [ utilize, [ "@cqrs.listener.resolver" ]]
+
     prooph.transaction.manager:
         class: Prooph\EventStoreBusBridge\TransactionManager
+        calls:
+            - [ setUp, [ "@prooph.event.store" ]]
+
+    prooph.event.publisher:
+        class: Prooph\EventStoreBusBridge\EventPublisher
+        arguments: [ "@prooph.event.bus" ]
         calls:
             - [ setUp, [ "@prooph.event.store" ]]
 

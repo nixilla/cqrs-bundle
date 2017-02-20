@@ -7,6 +7,7 @@ use Nixilla\CqrsBundle\Services\ProjectorResolver;
 use PhpSpec\ObjectBehavior;
 use Prooph\Common\Event\ActionEvent;
 use Prooph\Common\Event\ActionEventEmitter;
+use Prooph\Common\Event\ActionEventListenerAggregate;
 use Prooph\ServiceBus\EventBus;
 use Prophecy\Argument;
 
@@ -20,6 +21,7 @@ class ProjectorResolverSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(ProjectorResolver::class);
+        $this->shouldHaveType(ActionEventListenerAggregate::class);
     }
 
     function it_can_attach_itself_to_dispatcher(ActionEventEmitter $dispatcher)

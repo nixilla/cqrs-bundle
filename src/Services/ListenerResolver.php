@@ -4,10 +4,11 @@ namespace Nixilla\CqrsBundle\Services;
 
 use Prooph\Common\Event\ActionEvent;
 use Prooph\Common\Event\ActionEventEmitter;
+use Prooph\Common\Event\ActionEventListenerAggregate;
 use Prooph\ServiceBus\EventBus;
 use Prooph\ServiceBus\MessageBus;
 
-class ListenerResolver
+class ListenerResolver implements ActionEventListenerAggregate
 {
     /** @var ListenerCollection */
     private $collection;
@@ -36,7 +37,7 @@ class ListenerResolver
         $event->setParam(
             EventBus::EVENT_PARAM_EVENT_LISTENERS,
             array_merge(
-                $event->getParam(EventBus::EVENT_PARAM_EVENT_LISTENERS),
+                $event->getParam(EventBus::EVENT_PARAM_EVENT_LISTENERS) ?: [],
                 $this->collection->getListeners(get_class($event->getParam(EventBus::EVENT_PARAM_MESSAGE)))
             )
         );

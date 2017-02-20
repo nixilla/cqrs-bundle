@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class NixillaCqrsBundle extends Bundle
 {
-    public function buid(ContainerBuilder $container)
+    public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new HandlerPass());
         $container->addCompilerPass(new ProjectorPass());
