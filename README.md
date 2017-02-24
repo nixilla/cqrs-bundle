@@ -33,3 +33,36 @@ class AppKernel extends Kernel
     }
 }
 ```
+
+Configure store adapter. Here is an example of setting MongoDB adapter:
+
+```yaml
+# app/config/services.yml
+
+parameters:
+
+    mongodb_server: mongodb://localhost:27017
+    mongodb_dbname: my_database
+
+services:
+    mongo.client:
+        class: MongoClient
+        arguments: [ "%mongodb_server%" ]
+        
+    mongo.event.store.adapter:
+        class: Prooph\EventStore\Adapter\MongoDb\MongoDbEventStoreAdapter
+        arguments: [ "@prooph.message.factory", "@prooph.message.converter", "@mongo.client", "%mongodb_dbname%" ]
+```
+
+```yaml
+# app/config/config.yml
+
+nixilla_cqrs:
+    event_store:
+        adapter: mongo.event.store.adapter
+
+```
+
+# Usage
+
+
