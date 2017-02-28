@@ -284,4 +284,45 @@ services:
         arguments: [ "@prooph.command.bus", "@form.contact.basic" ]
 ```
 
-Now if you run the curl command listed above, you should get HTTP 201 Created.
+Now if you run the curl command listed above, you should get HTTP 201 Created and you should see this record in your
+MongoDB:
+
+```json
+{
+    "_id" : "2d44331b-9d0d-47fa-b5be-01cd247c8a70",
+    "version" : 1,
+    "event_name" : "Newsletter\\Domain\\Event\\ContactCreated",
+    "payload" : {
+        "emailAddress" : "john@smith.local"
+    },
+    "created_at" : "2017-02-28T16:51:27.414000",
+    "aggregate_id" : "john@smith.local",
+    "aggregate_type" : "Newsletter\\Domain\\Aggregate\\Contact",
+    "causation_id" : "21cd3129-0216-4437-86bc-9d7ede0bb08c",
+    "causation_name" : "Newsletter\\Domain\\Command\\CreateContact"
+}
+```
+
+Because there is a 1-to-1 relation between Command and CommandHandler, this bundle assumes following configuration:
+
+* if command is called `\Any\Namespace\SomeCommand` then the service id that handles this command should be called `handler.some_command`
+* namespace is ignored, only class name is used
+* class name CamelCased is converted to snake_case using Symfony own `CamelCaseToSnakeCaseNameConverter`
+
+## Listeners and Projectors
+
+Although Prooph library does not distinguish listeners and projectors, this bundle supports this separation.
+
+The idea is that **listeners** are run only once, when the event actually occurs (real time).
+For example, you may want to notify marketing team that they have new newsletter signup.
+
+
+**Projectors** on the other hand, can be run as many time as you want. The purpose of the projector is update read model.
+Updating read model could be:
+
+* writing SQL commands to read database
+* writing cache to Varnish
+* writing data directly to ElasticSearch 
+* building static HTML files 
+ 
+
