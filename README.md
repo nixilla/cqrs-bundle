@@ -362,7 +362,7 @@ and to make it work, you need to let know Symfony how to inject it.
 
 services:
 
-    listener.account_name_mismatch:
+    listener.contact_created:
         class: AppBundle\Cqrs\Listeners\MarketingNotificationListener
         arguments: [ "@hipchat.notifier" ]
         tags:
