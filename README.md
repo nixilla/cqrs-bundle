@@ -404,7 +404,7 @@ wiring is similar to what you see in the listeners section above, but it is impo
 
 services:
 
-    project.campaign_monitor.contact_created:
+    projector.campaign_monitor.contact_created:
         class: AppBundle\Cqrs\Projectors\CampaignMonitorContactCreatedProjector
         arguments: [ "@campaign.monitor" ]
         tags:
