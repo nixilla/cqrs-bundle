@@ -313,9 +313,15 @@ Because there is a 1-to-1 relation between Command and CommandHandler, this bund
 
 Although Prooph library does not distinguish listeners and projectors, this bundle supports this separation.
 
+Why separate it? ES - Event Sourcing is a concept of storing data as series of events. At some point you will want to
+replay all events and construct new read model. This may happen in various situations, for example when someone asks you:
+
+* what is the newsletter monthly subscription frequency?
+* or "Can you send this newsletter to all people why subscribed over the August only?"
+
 The idea is that **listeners** are run only once, when the event actually occurs (real time).
 For example, you may want to notify marketing team that they have new newsletter signup.
-
+You don't want to execute listeners when you replay events to compile new read model or new report.
 
 **Projectors** on the other hand, can be run as many time as you want. The purpose of the projector is update read model.
 Updating read model could be:
@@ -324,5 +330,48 @@ Updating read model could be:
 * writing cache to Varnish
 * writing data directly to ElasticSearch 
 * building static HTML files 
- 
+
+A listener may look like this:
+
+```php
+<?php
+
+namespace AppBundle\Cqrs\Listeners;
+
+class MarketingNotificationListener
+{
+    /**
+     * @var HipchatNotifier (from nixilla/hipchat-bundle)
+     */
+    private $notifier;
+    
+    public function __invoke(ContactCreated $event)
+    {
+        $payload = $event->payload();
+        $message = sprintf("New Newsletter subscription, email address '%s'", $payload['emailAddress']);
+        $this->notifier->notify('red', $message, 'text', true);
+    }
+}
+```
+
+and to make it work, you need to let know Symfony how to inject it.
+
+```yaml
+
+# src/AppBundle/Resources/config/services.yml
+
+services:
+
+    listener.account_name_mismatch:
+        class: AppBundle\Cqrs\Listeners\MarketingNotificationListener
+        arguments: [ "@hipchat.notifier" ]
+        tags:
+            - { name: cqrs.event.listener, event: Newsletter\Domain\Event\ContactCreated }
+
+```
+
+A single event can have many event listeners and many projectors. So in order to configure listener, you need
+to tag service with `{ name: cqrs.event.listener, event: Newsletter\Domain\Event\ContactCreated }`
+This will add listener to array of listener for given event class, and when even occurs, all listeners will be
+executed.
 
