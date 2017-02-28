@@ -75,6 +75,8 @@ Here is the list of CQRS/ES artifacts we will create in order
 * CreateContactHandler - command handler
 * ContactRepository - class that interacts with data store - similar concept as Doctrine repository
 * ContactCreated - this is the event class that gets persisted to data store
+* MarketingNotificationListener - a sample listener which send Hipchat notification
+* CampaignMonitorContactCreatedProjector - a sample projector, which updates Campaign Monitor 
 
 Let's start with non-cqrs stuff, and that is Symfony form and controller. I've omitted some code (like constructors and use statements)
 to make it shorter.
@@ -372,6 +374,40 @@ services:
 
 A single event can have many event listeners and many projectors. So in order to configure listener, you need
 to tag service with `{ name: cqrs.event.listener, event: Newsletter\Domain\Event\ContactCreated }`
-This will add listener to array of listener for given event class, and when even occurs, all listeners will be
+This will add listener to array of listeners for given event class, and when that even occurs, all listeners will be
 executed.
 
+A sample projector may look like this:
+
+```php
+<?php
+
+namespace AppBundle\Cqrs\Projectors;
+
+class CampaignMonitorContactCreatedProjector
+{
+    private $campaignMonitor;
+    
+    public function __invoke(ContactCreated $event)
+    {
+        $payload = $event->payload();
+        $this->campaignMonitor->subscribe($payload['emailAddress'], $listId = 'my list id');
+    }
+}
+```
+
+wiring is similar to what you see in the listeners section above, but it is important to tag it with `cqrs.event.projector`.
+
+```yaml
+
+# src/AppBundle/Resources/config/services.yml
+
+services:
+
+    project.campaign_monitor.contact_created:
+        class: AppBundle\Cqrs\Projectors\CampaignMonitorContactCreatedProjector
+        arguments: [ "@campaign.monitor" ]
+        tags:
+            - { name: cqrs.event.projector, event: Newsletter\Domain\Event\ContactCreated }
+
+```
