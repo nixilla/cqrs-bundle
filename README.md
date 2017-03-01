@@ -283,8 +283,10 @@ services:
 
     controller.contact.create:
         class: AppBundle\Controller\ContactCreateController
-        arguments: [ "@prooph.command.bus", "@form.contact.basic" ]
+        arguments: [ "@prooph.command.bus", "@form.contact.basic", "@prooph.event.publisher" ]
 ```
+
+Please note that the number of params passed to controller is higher than the number it accepts. @todo explain why
 
 Now if you run the curl command listed above, you should get HTTP 201 Created and you should see this record in your
 MongoDB:
